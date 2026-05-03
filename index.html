@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Học tập Cầu lông 10</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .bg-gradient { background: linear-gradient(135deg, #0056b3, #003366); }
+        .card-border { border-top: 8px solid #ffcc00; }
+        .chu-de-border { border-left: 5px solid #0056b3; background: #eef5ff; }
+        .transition-all { transition: all 0.3s ease; }
+        .hover-move:hover { transform: translateX(5px); }
+        #menu-view { display: none; }
+    </style>
+</head>
+<body class="bg-gradient min-h-screen py-8 px-4 text-gray-800">
+
+    <div class="max-w-md mx-auto">
+        <div id="login-view" class="bg-white p-8 rounded-[2rem] shadow-2xl card-border text-center">
+            <div class="flex justify-center mb-6">
+                <div class="bg-[#eef5ff] p-4 rounded-full">
+                    <i data-lucide="graduation-cap" class="w-12 h-12 text-[#0056b3]"></i>
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold text-[#0056b3] mb-6 uppercase tracking-tight">Cổng Học Sinh</h2>
+            
+            <form id="loginForm" class="space-y-4">
+                <input type="text" id="studentName" placeholder="Họ và Tên của em" required
+                    class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-[#0056b3] outline-none transition-all text-center">
+                
+                <select id="studentClass" required
+                    class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-[#0056b3] outline-none transition-all text-center">
+                    <option value="">-- Chọn Lớp --</option>
+                    <option value="10D1">Lớp 10D1</option>
+                    <option value="10D2">Lớp 10D2</option>
+                    <option value="10D3">Lớp 10D3</option>
+                    <option value="10D4">Lớp 10D4</option>
+                    <option value="10D5">Lớp 10D5</option>
+                </select>
+                
+                <input type="password" id="password" placeholder="Mật khẩu" required
+                    class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-[#0056b3] outline-none transition-all text-center">
+                
+                <button type="submit"
+                    class="w-full bg-[#0056b3] text-white font-bold py-3 rounded-xl hover:bg-[#004494] transition-all shadow-lg flex items-center justify-center gap-2">
+                    VÀO HỌC NGAY <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <button onclick="goToAdmin()" class="text-sm text-gray-400 hover:text-[#0056b3] flex items-center justify-center gap-1 mx-auto transition-all">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Dành cho Giáo viên: Truy cập Quản lý
+                </button>
+            </div>
+        </div>
+
+        <div id="menu-view" class="space-y-6">
+            <div class="bg-white/20 backdrop-blur-md text-white p-4 rounded-2xl text-center shadow-sm border border-white/30">
+                <p class="font-medium flex items-center justify-center gap-2">
+                    <i data-lucide="user-check" class="w-5 h-5 text-[#ffcc00]"></i>
+                    Chào em: <span id="display-name" class="font-bold text-[#ffcc00]"></span> - Lớp: <span id="display-class" class="font-bold text-[#ffcc00]"></span>
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-[2rem] shadow-2xl card-border">
+                
+                <div class="mb-8">
+                    <button onclick="openAIEval()" 
+                        class="w-full bg-gradient-to-r from-[#0056b3] to-[#003366] text-white py-4 px-4 rounded-2xl shadow-[0_8px_30px_rgb(0,86,179,0.3)] hover:shadow-[0_8px_30px_rgb(0,86,179,0.5)] hover:-translate-y-1 transition-all flex items-center justify-center gap-4 border-2 border-[#ffcc00]/30 group">
+                        <div class="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-all">
+                            <i data-lucide="bot" class="w-8 h-8 text-[#ffcc00] animate-pulse"></i> 
+                        </div>
+                        <div class="text-left flex-1">
+                            <div class="text-[1.1rem] font-bold uppercase tracking-wide text-[#ffcc00]">AI Đánh giá Kỹ thuật</div>
+                            <div class="text-sm text-blue-100 font-medium mt-0.5">Nộp video & Nhận điểm % ngay</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                    </button>
+                </div>
+
+                <div class="border-b-2 border-[#ffcc00] pb-3 mb-6 text-center">
+                    <h1 class="text-xl font-bold text-[#0056b3] uppercase tracking-wide">Chủ đề môn cầu lông</h1>
+                </div>
+
+                <div id="topics-container" class="space-y-8">
+                    </div>
+
+                <button onclick="logout()" class="mt-10 w-full bg-gray-50 text-gray-500 font-bold py-3 rounded-xl hover:bg-red-50 hover:text-red-500 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="log-out" class="w-5 h-5"></i> ĐĂNG XUẤT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CẤU TRÚC BÀI HỌC
+        const TOPICS = [
+            {
+                title: "Chủ đề 4: KĨ THUẬT GIAO CẦU",
+                lessons: [
+                    { id: 'cd4-b1', title: 'Bài 1: Kĩ thuật giao cầu thuận tay' },
+                    { id: 'cd4-b2', title: 'Bài 2: Kĩ thuật giao cầu trái tay' }
+                ]
+            },
+            {
+                title: "Chủ đề 5: Kĩ thuật đánh cầu cao thuận tay",
+                lessons: [
+                    { id: 'cd5-b1', title: 'Bài 1: Kĩ thuật đánh cầu cao thuận tay' },
+                    { id: 'cd5-b2', title: 'Bài 2: Phối hợp di chuyển lùi đánh cầu cao thuận tay' },
+                    { id: 'cd5-b3', title: 'Bài 3: Phối hợp di chuyển ngang đánh cầu cao thuận tay' }
+                ]
+            },
+            {
+                title: "Chủ đề 6: Kĩ thuật đập cầu",
+                lessons: [
+                    { id: 'cd6-b1', title: 'Bài 1: Kĩ thuật đập cầu thuận tay' },
+                    { id: 'cd6-b2', title: 'Bài 2: Phối hợp di chuyển lùi đập cầu thuận tay' },
+                    { id: 'cd6-b3', title: 'Bài 3: Phối hợp di chuyển ngang đập cầu thuận tay' }
+                ]
+            }
+        ];
+
+        // Khởi tạo Lucide Icons
+        lucide.createIcons();
+
+        // HÀM LIÊN KẾT SANG TRANG TRO-LY-AI.HTML
+          function openAIEval() {
+    // Lấy tên và lớp trực tiếp từ bộ nhớ đệm localStorage
+    const name = localStorage.getItem('name');
+    const sClass = localStorage.getItem('class');
+    
+    // Đường link cô vừa gửi cho tôi
+    const baseUrl = "https://script.google.com/macros/s/AKfycbx73QDsdk9GRFc0SOgghfaZOEFPbw9YWP57m0aQdL-e7XVNmZiecqYa7TtzyLiefDeWAg/exec";
+    
+    if (name && sClass) {
+        // Gửi dữ liệu đi với cấu trúc chuẩn: ?name=...&class=...
+        const finalUrl = baseUrl + "?name=" + encodeURIComponent(name.trim()) + "&class=" + encodeURIComponent(sClass.trim());
+        window.location.href = finalUrl;
+    } else {
+        alert("Em hãy đăng nhập lại ở trang chủ để AI nhận diện được tên nhé!");
+    }
+}
+  // Xử lý Đăng nhập học sinh
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('studentName').value;
+            const sClass = document.getElementById('studentClass').value;
+            const pass = document.getElementById('password').value;
+
+            if (pass === "caulong2026") {
+                localStorage.setItem('name', name);
+                localStorage.setItem('class', sClass);
+                renderMenu(name, sClass);
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('menu-view').style.display = 'block';
+                lucide.createIcons();
+            } else {
+                alert("Mật khẩu không đúng!");
+            }
+        });
+
+        // Hàm chuyển sang trang Quản lý của Giáo viên
+        function goToAdmin() {
+            window.location.href = "quan-ly-cong.html";
+        }
+
+        // Render danh sách bài học
+        function renderMenu(name, sClass) {
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('display-class').textContent = sClass;
+            
+            const container = document.getElementById('topics-container');
+            container.innerHTML = '';
+
+            TOPICS.forEach(topic => {
+                const topicDiv = document.createElement('div');
+                topicDiv.className = 'space-y-3';
+                topicDiv.innerHTML = `
+                    <div class="chu-de-border p-3 rounded-r-xl">
+                        <h3 class="font-bold text-[#003366] text-sm">${topic.title}</h3>
+                    </div>
+                    <div class="space-y-2">
+                        ${topic.lessons.map(lesson => `
+                            <button onclick="openLesson('${lesson.id}', '${lesson.title}')" 
+                                class="w-full flex items-center p-4 bg-white border border-gray-100 rounded-2xl hover-move hover:border-[#0056b3] hover:shadow-lg transition-all text-left group">
+                                <div class="w-10 h-10 bg-[#ffcc00] rounded-full flex items-center justify-center mr-4 shrink-0 shadow-sm">
+                                    <i data-lucide="play" class="w-4 h-4 text-[#003366] fill-current"></i>
+                                </div>
+                                <span class="text-sm font-bold text-gray-700 leading-tight">${lesson.title}</span>
+                                <i data-lucide="chevron-right" class="w-5 h-5 ml-auto text-gray-300 group-hover:text-[#0056b3]"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(topicDiv);
+            });
+            lucide.createIcons();
+        }
+
+        // Hàm mở bài học chi tiết
+        function openLesson(id, title) {
+            localStorage.setItem('currentLesson', title);
+            window.location.href = id + ".html";
+        }
+
+        // Đăng xuất
+        function logout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // Kiểm tra trạng thái khi tải trang
+        window.onload = function() {
+            const savedName = localStorage.getItem('name');
+            const savedClass = localStorage.getItem('class');
+            if (savedName && savedClass) {
+                renderMenu(savedName, savedClass);
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('menu-view').style.display = 'block';
+                lucide.createIcons();
+            }
+        };
+    </script>
+</body>
+</html>
